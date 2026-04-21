@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>THAPEEY</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Alpine.js -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- App -->
+    <script src="src/app.js"></script>
+  </head>
+  <body>
+    <!--  Navbar Start -->
+    <nav class="navbar" x-data>
+      <a href="#" class="navbar-logo">Thapeeツ</a>
+
+      <div class="navbar-nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#menu">Menu</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="navbar-extra">
+        <a href="#" id="search-button"><i data-feather="search"></i></a>
+        <a href="#" id="shopping-cart-button"
+          ><i data-feather="shopping-cart"></i>
+          <span
+            class="quantity-badge"
+            x-show="$store.cart.quantity"
+            x-text="$store.cart.quantity"
+          ></span>
+        </a>
+        <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+      </div>
+
+      <!-- Search Form start -->
+      <div class="search-form">
+        <input type="search" id="search-box" placeholder="search here..." />
+        <label for="search-box"><i data-feather="search"></i></label>
+      </div>
+      <!-- Search Form end -->
+
+      <!-- Shopping Cart start -->
+      <div class="shopping-cart">
+        <h4 x-show="$store.cart.items.length">Detail Pesanan</h4>
+        <template x-for="(item, index) in $store.cart.items" x-keys="index">
+          <div class="cart-item">
+            <img :src="`image/${item.img}`" :alt="item.name" />
+            <div class="item-detail">
+              <h3 x-text="item.name"></h3>
+              <div class="item-price">
+                <span x-text="rupiah(item.price)"></span> &times;
+                <button id="remove" @click="$store.cart.remove(item.id)">
+                  &minus;
+                </button>
+                <span x-text="item.quantity"></span>
+                <button id="add" @click="$store.cart.add(item)">&plus;</button>
+                &equals;
+                <span x-text="rupiah(item.total)"></span>
+              </div>
+            </div>
+          </div>
+        </template>
+        <h5 x-show="!$store.cart.items.length" style="margin-top: 1rem">
+          Cart Is Empty
+        </h5>
+        <h5 x-show="$store.cart.items.length">
+          Total : <span x-text="rupiah($store.cart.total)"></span>
+        </h5>
+
+        <div class="form-container" x-show="$store.cart.items.length">
+          <form
+            action=""
+            id="checkoutForm"
+            onsubmit="return handleCheckout(event);"
+          >
+            <h5 style="margin-top: 1.4rem">Customer Detail</h5>
+            <label for="name">
+              <span>Name</span>
+              <input type="text" name="name" id="name" />
+            </label>
+            <label for="email">
+              <span>Email</span>
+              <input type="email" name="email" id="email" />
+            </label>
+            <label for="phone">
+              <span>No HP</span>
+              <input type="text" name="phone" id="phone" />
+            </label>
+
+            <button
+              class="checkout-button"
+              type="submit"
+              id="checkout-button"
+              value="checkout"
+            >
+              Checkout
+            </button>
+          </form>
+          <div id="popup" class="popup">
+            <div class="popup-content">
+              <h3>Checkout Berhasil ✅</h3>
+              <button class="btn-popup" onclick="checkoutSuccess()">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Hero section -->
+    <section class="hero" id="home">
+      <main class="content">
+        <!-- Judul Produk -->
+        <h1>Mari Nikmati Sepotong <span>Tape</span></h1>
+        <p>
+          Temukan berbagai olahan tape lezat dengan kualitas terbaik hanya di Thapee.
+        </p>
+        <a href="#" class="bs">Beli Sekarang</a>
+      </main>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+      <h2>About</h2>
+
+      <div class="row">
+        <div class="about-img">
+          <img src="image/about-tape.jpg" alt="About Me" />
+        </div>
+
+        <div class="content">
+          <p>
+            Tape adalah salah satu makanan tradisional Indonesia yang dibuat
+            melalui proses fermentasi, menghasilkan cita rasa khas yang manis,
+            sedikit asam, dan lembut di lidah. Produk kami cocok dinikmati
+            langsung maupun diolah menjadi berbagai hidangan kreatif seperti
+            kue, es dessert, hingga camilan kekinian.
+          </p>
+          <p>
+            Melalui platform e-commerce ini, kami berkomitmen untuk memudahkan
+            Anda dalam mendapatkan tape terbaik tanpa harus keluar rumah. Dengan
+            sistem pemesanan yang praktis, pengemasan aman, dan pengiriman
+            cepat, kami memastikan setiap produk sampai dalam kondisi segar dan
+            siap dinikmati.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu" x-data="products">
+      <h2>Menu</h2>
+      <p>
+        Menu olahan dari tape singkong menjadi berbagai hidangan kreatif seperti
+        kue, es dessert, hingga camilan kekinian.
+      </p>
+
+      <div class="row">
+        <!-- Produk 1 Start -->
+        <template x-for="(item, index) in items" x-key="index">
+          <div class="menu-card">
+            <div class="menu-image">
+              <img :src="`image/${item.img}`" :alt="item.name" />
+            </div>
+            <div class="menu-content">
+              <h3 x-text="item.name"></h3>
+              <div class="menu-stars">
+                <svg
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="image/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="image/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="image/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="image/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="image/feather-sprite.svg#star" />
+                </svg>
+              </div>
+              <div class="menu-icons">
+                <a href="#" @click.prevent="$store.cart.add(item)">
+                  <svg
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <use href="image/feather-sprite.svg#shopping-cart" />
+                  </svg>
+                  <div class="menu-price" x-text="rupiah(item.price)"></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </template>
+        <!-- Produk 1 End -->
+      </div>
+    </section>
+
+    <!-- contact -->
+    <section id="contact" class="contact">
+      <h2>Contact Me</h2>
+      <p>
+        Temukan lokasi kami atau hubungi kami untuk pemesanan dan informasi lebih lanjut
+      </p>
+
+      <div class="row">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.8886249566303!2d112.70855107318681!3d-7.366379372486916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e35eede71925%3A0x276b9e9dbed82746!2sJl.%20Griyo%20Wage%20Asri%20II%2C%20Sritanjung%2C%20Wage%2C%20Kec.%20Taman%2C%20Kabupaten%20Sidoarjo%2C%20Jawa%20Timur%2061257!5e0!3m2!1sid!2sid!4v1776584971905!5m2!1sid!2sid"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="map"
+        ></iframe>
+
+        <form action="">
+          <div class="input-group">
+            <i data-feather="user"></i>
+            <input type="text" placeholder="Nama" />
+          </div>
+          <div class="input-group">
+            <i data-feather="mail"></i>
+            <input type="text" placeholder="Email" />
+          </div>
+          <div class="input-group">
+            <i data-feather="phone"></i>
+            <input type="text" placeholder="No Handphone" />
+          </div>
+          <button type="submit" class="btn">Kirim Pesan</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+      <div class="social">
+        <a href="https://instagram.com"><i data-feather="instagram"></i></a>
+        <a href="https://youtube.com"><i data-feather="youtube"></i></a>
+        <a href="https://facebook.com"><i data-feather="facebook"></i></a>
+      </div>
+
+      <div class="credit">
+        <p>email@TokoThapee.com</p>
+        <p>Created by Kelompok 2 &copy;2026</p>
+      </div>
+    </footer>
+
+    <!-- Icons -->
+    <script>
+      feather.replace();
+    </script>
+
+    <!-- Java Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
